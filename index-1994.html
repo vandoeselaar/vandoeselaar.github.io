@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>vandoeselaar.com - The Future is Now!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: url("images/old-wall.png") repeat;
+      font-family: "Times New Roman", serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 36px;
+      color: #0000CC;
+      text-shadow: 1px 1px #CCCCCC;
+    }
+    .blink {
+      animation: blink 1s steps(1, start) infinite;
+    }
+    @keyframes blink {
+      50% { visibility: hidden; }
+    }
+    marquee {
+      background: #FFFF00;
+      color: #FF0000;
+      font-weight: bold;
+      padding: 5px;
+    }
+    table {
+      width: 90%;
+      margin: auto;
+      border: 2px solid #0000CC;
+      background: #FFFFFF;
+    }
+    td {
+      padding: 10px;
+    }
+    img.responsive {
+      max-width: 100%;
+      height: auto;
+    }
+    footer {
+      font-size: small;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <marquee behavior="scroll" direction="left">
+    *** Welcome to vandoeselaar.com - Best viewed in Netscape Navigator ***
+  </marquee>
+
+  <br>
+  <img src="images/logo.png" alt="Logo" class="responsive" width="200">
+  <h1>vandoeselaar.com</h1>
+  <p class="blink">Freelance Developer</p>
+
+  <table>
+    <tr>
+      <td>
+        <font face="Courier New">
+        Web applications<br>
+        Reverse engineering<br>
+        Embedded systems<br>
+        HTML, PHP, Javascript, CSS, C, C++, Python
+        </font>
+      </td>
+    </tr>
+  </table>
+
+  <br>
+  <p>
+    <img src="images/email.gif" 
+         alt="Mailbox"><br>
+    Contact: info[at]vandoeselaar.com
+  </p>
+
+  <footer>
+    <hr width="60%">
+    <p>&copy; vandoeselaar.com | Best viewed in 800x600 resolution</p>
+  </footer>
+
+</body>
+</html>
