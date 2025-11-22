@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 
 <html>
@@ -12,15 +11,12 @@
 	</head>
 	<body class="is-preload">
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<div id="wrapper">
 
-				<!-- Header -->
-					<header id="header">
+				<header id="header">
 						<div class="logo">
 						<img src="/images/logo.png" style="width:100%"/>
-							<!--<span class="icon fa-gem"></span>-->
-						</div>
+							</div>
 						<div class="content">
 							<div class="inner">
 								<h1>vandoeselaar.com</h1>
@@ -31,31 +27,58 @@
 								info<code>&#64;</code>vandoeselaar.com
 								<br/><br/>
 								<a href="index-1994.html">Since 1994</a>
+                                
+                                <!-- <p><span id="counter-display">Loading...</span></p> -->
 
 							</div>
-
 						</div>
-						
 					</header>
 
-		
-
-				<!-- Footer -->
-					<footer id="footer">
+				<footer id="footer">
 						<p class="copyright">&copy; vandoeselaar.com</p>
 					</footer>
 
 			</div>
 
-		<!-- BG -->
-			<div id="bg"></div>
+		<div id="bg"></div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
-	</body>
+            <script>
+                // 1. Definieer de URL van de counter API
+                const apiURL = 'https://tinkering.vandoeselaar.com/count.php';
+                const counterElement = document.getElementById('counter-display');
+
+                // 2. Roep de API aan met Fetch
+                fetch(apiURL)
+                    .then(response => {
+                        // Controleer of de HTTP-status goed is (200 OK)
+                        if (!response.ok) {
+                            throw new Error(`HTTP fout! Status: ${response.status}`);
+                        }
+                        // Retourneer de response als JSON-object
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 3. Verwerk de JSON-data
+                        if (data.success && data.count !== undefined) {
+                            // Toon de succesvolle tellerwaarde
+                            counterElement.textContent = data.count;
+                        } else {
+                            // Toon een fout als de API wel reageert, maar success: false is
+                            counterElement.textContent = 'Fout (API)';
+                            console.error('API reageerde met een fout:', data.message || 'Onbekende fout.');
+                        }
+                    })
+                    .catch(error => {
+                        // 4. Afhandeling van netwerkfouten (CORS, verbinding, time-out)
+                        counterElement.textContent = 'Fout (Netwerk)';
+                        console.error('Kon teller niet ophalen:', error);
+                    });
+            </script>
+            </body>
 </html>
