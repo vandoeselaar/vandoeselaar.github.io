@@ -49,36 +49,38 @@
 			<script src="assets/js/main.js"></script>
 
             <script>
-                // 1. Definieer de URL van de counter API
-                const apiURL = 'https://tinkering.vandoeselaar.com/count.php';
-                const counterElement = document.getElementById('counter-display');
+            	document.addEventListener('DOMContentLoaded', function() {
+	                // 1. Definieer de URL van de counter API
+	                const apiURL = 'https://tinkering.vandoeselaar.com/count.php';
+	                const counterElement = document.getElementById('counter-display');
 
-                // 2. Roep de API aan met Fetch
-                fetch(apiURL)
-                    .then(response => {
-                        // Controleer of de HTTP-status goed is (200 OK)
-                        if (!response.ok) {
-                            throw new Error(`HTTP fout! Status: ${response.status}`);
-                        }
-                        // Retourneer de response als JSON-object
-                        return response.json();
-                    })
-                    .then(data => {
-                        // 3. Verwerk de JSON-data
-                        if (data.success && data.count !== undefined) {
-                            // Toon de succesvolle tellerwaarde
-                            counterElement.textContent = data.count;
-                        } else {
-                            // Toon een fout als de API wel reageert, maar success: false is
-                            counterElement.textContent = 'Fout (API)';
-                            console.error('API reageerde met een fout:', data.message || 'Onbekende fout.');
-                        }
-                    })
-                    .catch(error => {
-                        // 4. Afhandeling van netwerkfouten (CORS, verbinding, time-out)
-                        counterElement.textContent = 'Fout (Netwerk)';
-                        console.error('Kon teller niet ophalen:', error);
-                    });
+	                // 2. Roep de API aan met Fetch
+	                fetch(apiURL)
+	                    .then(response => {
+	                        // Controleer of de HTTP-status goed is (200 OK)
+	                        if (!response.ok) {
+	                            throw new Error(`HTTP fout! Status: ${response.status}`);
+	                        }
+	                        // Retourneer de response als JSON-object
+	                        return response.json();
+	                    })
+	                    .then(data => {
+	                        // 3. Verwerk de JSON-data
+	                        if (data.success && data.count !== undefined) {
+	                            // Toon de succesvolle tellerwaarde
+	                            counterElement.textContent = data.count;
+	                        } else {
+	                            // Toon een fout als de API wel reageert, maar success: false is
+	                            counterElement.textContent = 'Fout (API)';
+	                            console.error('API reageerde met een fout:', data.message || 'Onbekende fout.');
+	                        }
+	                    })
+	                    .catch(error => {
+	                        // 4. Afhandeling van netwerkfouten (CORS, verbinding, time-out)
+	                        counterElement.textContent = 'Fout (Netwerk)';
+	                        console.error('Kon teller niet ophalen:', error);
+	                    });
+	                });
             </script>
             </body>
 </html>
