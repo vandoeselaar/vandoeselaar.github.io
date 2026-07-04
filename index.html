@@ -1,88 +1,542 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#EFE9DC">
+<title>vandoeselaar.com</title>
+<link rel="preload" href="fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="description" content="Job van Doeselaar freelance developer en autonoom kunstenaar. Webapplicaties, reverse engineering en embedded systems, met een kunstacademie-blik en een soldeerbout.">
+<style>
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/anton-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/archivo-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/archivo-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/archivo-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2')}
+:root{
+  --paper:#EFE9DC;
+  --ink:#171410;
+  --riso-blue:#1D4ED8;
+  --riso-pink:#FF3EA5;
+  --riso-pink-deep:#B4136B;
+  --riso-yellow:#F5C518;
+  --shift:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#EFE9DC;height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Archivo',sans-serif;
+  font-size:17px;
+  line-height:1.55;
+  height:100%;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+/* papierkorrel */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--riso-pink-deep);color:var(--paper)}
 
-<html>
-	<head>
-		<title>vandoeselaar.com</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<script defer src="https://analytics.vandoeselaar.com/script.js" data-website-id="a5086a1a-be10-4dcb-a302-f64cbe0f0f64"></script>
-	</head>
-	<body class="is-preload">
+.mono{font-family:'IBM Plex Mono',monospace}
+.display{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.01em}
 
-		<div id="wrapper">
+/* misregistratie het signatuureffect */
+.misreg{position:relative;display:inline-block}
+.misreg::before,.misreg::after{
+  content:attr(data-text);position:absolute;inset:0;pointer-events:none;
+  transition:transform .18s cubic-bezier(.2,.9,.3,1.4),opacity .18s;
+  opacity:0;
+}
+.misreg::before{color:var(--riso-pink);mix-blend-mode:multiply;z-index:-1}
+.misreg::after{color:var(--riso-blue);mix-blend-mode:multiply;z-index:-2}
+.misreg:hover::before,.misreg.on::before{opacity:1;transform:translate(calc(var(--shift)*-1),var(--shift))}
+.misreg:hover::after,.misreg.on::after{opacity:1;transform:translate(var(--shift),calc(var(--shift)*-1))}
 
-				<header id="header">
-						<div class="logo">
-						<img src="/images/logo.png" style="width:100%"/>
-							</div>
-						<div class="content">
-							<div class="inner">
-								<h1>vandoeselaar.com</h1>
-								<p>Freelance developer</p>
-								<p>Web applications, Reverse engineering, Embedded systems</p>
-								<p>
-								HTML, PHP, Javascript, CSS, C, C++, Python </p><br/>
-								info<code>&#64;</code>vandoeselaar.com
-								<br/><br/>
-								<a href="index-1994.html">Since 1994</a>
-                                
-                                <!-- count.php test -->
+/* ============ NAV ============ */
+nav{
+  position:relative;z-index:100;flex-shrink:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:calc(14px + env(safe-area-inset-top,0px)) 24px 14px;
+  background:var(--paper);
+  border-bottom:2px solid var(--ink);
+}
+nav .logo{font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+nav ul{display:flex;gap:26px;list-style:none}
+nav a{color:var(--ink);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:lowercase}
+nav a:hover{color:var(--riso-pink)}
+nav .burger{display:none;font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:lowercase;background:var(--paper);border:2px solid var(--ink);color:var(--ink);padding:6px 14px;cursor:pointer}
+nav .burger[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
 
-                                <p><span id="counter-display" style="display:none;">Loading...</span></p>
+/* ============ HERO ============ */
+.hero{
+  min-height:calc(100svh - 58px);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:40px 24px 0;position:relative;
+}
+.hero-shapes{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hero-shapes .blob{position:absolute;mix-blend-mode:multiply;opacity:.85;will-change:transform}
+.blob.pink{width:46vw;height:46vw;max-width:560px;max-height:560px;background:var(--riso-pink);border-radius:50%;top:8%;right:-10%;}
+.blob.blue{width:38vw;height:52vw;max-width:460px;max-height:640px;background:var(--riso-blue);top:16%;right:14%;transform:rotate(12deg)}
+@media(prefers-reduced-motion:reduce){.hero-shapes .blob{transform:none!important}.blob.blue{transform:rotate(12deg)!important}}
+.blob.yellow{width:20vw;height:20vw;max-width:240px;max-height:240px;background:var(--riso-yellow);border-radius:50%;top:52%;right:26%}
+.hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+.hero-eyebrow span{border:1.5px solid var(--ink);padding:3px 10px;background:var(--paper)}
+.hero-eyebrow s{text-decoration-color:var(--riso-pink-deep);text-decoration-thickness:2.5px}
+.hero h1{
+  font-family:'Anton',sans-serif;text-transform:uppercase;
+  font-size:clamp(64px,17vw,260px);
+  line-height:.86;letter-spacing:-.005em;
+  position:relative;z-index:2;
+}
+.hero h1 .line{display:block}
+.hero-sub{
+  position:relative;z-index:2;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  padding:22px 0 26px;flex-wrap:wrap;
+}
+.hero-sub p{max-width:520px;font-size:18px;font-weight:500}
+.hero-sub .since{font-family:'IBM Plex Mono',monospace;font-size:13px;text-align:right}
+.hero-sub .since b{display:block;font-size:26px;font-weight:500}
 
-							</div>
-						</div>
-					</header>
+/* ============ MARQUEE ============ */
+.marquee{
+  border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);
+  background:var(--ink);color:var(--paper);
+  overflow:hidden;white-space:nowrap;padding:10px 0;
+}
+.marquee .track{display:inline-block;animation:scroll 28s linear infinite}
+.marquee span{font-family:'IBM Plex Mono',monospace;font-size:14px;text-transform:uppercase;margin:0 14px}
+.marquee i{font-style:normal;color:var(--riso-pink)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-				<footer id="footer">
-						<p class="copyright">&copy; vandoeselaar.com</p>
-					</footer>
+/* ============ SECTIES ============ */
+section{padding:90px 24px;max-width:1200px;margin:0 auto}
+#kunst,#diensten,#contact{content-visibility:auto;contain-intrinsic-size:auto 800px}
+.sec-label{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:uppercase;
+  display:inline-block;background:var(--riso-blue);color:var(--paper);
+  padding:4px 12px;margin-bottom:28px;transform:rotate(-1.2deg);
+}
+h2{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(38px,6vw,72px);line-height:.95;margin-bottom:36px}
 
-			</div>
+/* over */
+.over-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start}
+.over-grid p{margin-bottom:18px;font-size:18px}
+.over-grid p b{background:var(--riso-yellow);padding:0 4px}
+.feiten{border:2px solid var(--ink);background:var(--paper)}
+.feiten div{display:flex;justify-content:space-between;gap:16px;padding:13px 16px;border-bottom:2px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:13px}
+.feiten div:last-child{border-bottom:none}
+.feiten b{font-weight:500;color:var(--riso-blue)}
 
-		<div id="bg"></div>
+/* werk */
+#werk{max-width:1200px}
+.werk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:2.5px solid var(--ink)}
+.kaart{
+  padding:30px 26px 34px;border:0 solid var(--ink);position:relative;
+  background:var(--paper);transition:background .15s;
+  border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);
+}
+.werk-grid .kaart:nth-child(2n){border-right:none}
+.werk-grid .kaart:nth-last-child(-n+2){border-bottom:none}
+.kaart:hover{background:#fff}
+.kaart .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.kaart .tags span{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;border:1.5px solid var(--ink);padding:2px 8px}
+.kaart h3{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:30px;margin-bottom:10px;line-height:1}
+.kaart p{font-size:15.5px;margin-bottom:14px}
+.kaart a{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--riso-pink)}
+.kaart a:hover{background:var(--riso-pink-deep);color:var(--paper)}
+.kaart .stempel{
+  position:absolute;top:18px;right:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+  text-transform:uppercase;color:var(--riso-pink-deep);border:1.5px solid var(--riso-pink-deep);
+  padding:2px 7px;transform:rotate(6deg);
+}
 
-		<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+/* kunst */
+.kunst-paneel{
+  background:var(--ink);color:var(--paper);
+  padding:36px 30px;display:grid;grid-template-columns:1.5fr 1fr;gap:40px;
+}
+.kunst-paneel + .kunst-paneel{margin-top:28px}
+.kunst-werk-titel{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:26px;grid-column:1/-1;margin:-6px 0 -14px}
+.kunst-beeld{grid-column:1/-1;margin:0}
+.kunst-beeld img{display:block;width:100%;height:auto;border:1.5px solid var(--paper)}
+.kunst-beeld figcaption{font-family:'IBM Plex Mono',monospace;font-size:12px;padding-top:10px;color:var(--paper);opacity:.85}
+.kunst-fotos{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:0}
+.kunst-fotos--3{grid-template-columns:repeat(3,1fr)}
+.kunst-fotos a{display:block}
+.kunst-fotos img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border:1.5px solid var(--paper)}
+@media(max-width:820px){.kunst-fotos{grid-template-columns:repeat(2,1fr)}.kunst-fotos a:last-child{grid-column:1/-1}}
 
-            <script>
-            	document.addEventListener('DOMContentLoaded', function() {
-	                // 1. Definieer de URL van de counter API
-	                const apiURL = 'https://tinkering.vandoeselaar.com/count.php';
-	                const counterElement = document.getElementById('counter-display');
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:rgba(23,20,16,.96);padding:24px;cursor:zoom-out}
+.lightbox img{max-width:min(1100px,92vw);max-height:82vh;width:auto;height:auto;border:1.5px solid var(--paper);cursor:auto}
+.lightbox figcaption{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--paper);text-align:center;max-width:80ch}
+.lightbox button{font-family:'IBM Plex Mono',monospace;font-size:14px;background:none;border:2px solid var(--paper);color:var(--paper);padding:8px 18px;cursor:pointer;text-transform:lowercase}
+.lightbox button:hover{background:var(--riso-pink);border-color:var(--riso-pink);color:var(--ink)}
+.kunst-paneel p{font-size:17px;margin-bottom:16px}
+.kunst-paneel p:last-child{margin-bottom:0}
+.kunst-paneel em{color:var(--riso-pink);font-style:normal}
+.kunst-credits{border:1.5px solid var(--paper);align-self:start}
+.kunst-credits div{display:flex;justify-content:space-between;gap:14px;padding:11px 14px;border-bottom:1.5px solid var(--paper);font-family:'IBM Plex Mono',monospace;font-size:12.5px}
+.kunst-credits div:last-child{border-bottom:none}
+.kunst-credits b{font-weight:500;color:var(--riso-pink);text-align:right}
+.kunst-credits a{color:var(--riso-pink);text-decoration:none;border-bottom:1.5px solid var(--riso-pink)}
+.kunst-credits a:hover{background:var(--riso-pink);color:var(--ink)}
+@media(max-width:820px){.kunst-paneel{grid-template-columns:1fr}}
 
-	                // 2. Roep de API aan met Fetch
-	                fetch(apiURL)
-	                    .then(response => {
-	                        // Controleer of de HTTP-status goed is (200 OK)
-	                        if (!response.ok) {
-	                            throw new Error(`HTTP fout! Status: ${response.status}`);
-	                        }
-	                        // Retourneer de response als JSON-object
-	                        return response.json();
-	                    })
-	                    .then(data => {
-	                        // 3. Verwerk de JSON-data
-	                        if (data.success && data.count !== undefined) {
-	                            // Toon de succesvolle tellerwaarde
-	                            counterElement.textContent = data.count;
-	                        } else {
-	                            // Toon een fout als de API wel reageert, maar success: false is
-	                            counterElement.textContent = 'Fout (API)';
-	                            console.error('API reageerde met een fout:', data.message || 'Onbekende fout.');
-	                        }
-	                    })
-	                    .catch(error => {
-	                        // 4. Afhandeling van netwerkfouten (CORS, verbinding, time-out)
-	                        counterElement.textContent = 'Fout (Netwerk)';
-	                        console.error('Kon teller niet ophalen:', error);
-	                    });
-	                });
-            </script>
-            </body>
+/* diensten */
+.diensten{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.dienst{border:2.5px solid var(--ink);padding:26px 22px;background:var(--paper);position:relative;transition:transform .15s}
+.dienst:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--riso-blue)}
+.dienst:nth-child(2):hover{box-shadow:6px 6px 0 var(--riso-pink)}
+.dienst:nth-child(3):hover{box-shadow:6px 6px 0 var(--riso-yellow)}
+.dienst h3{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:24px;margin-bottom:10px}
+.dienst p{font-size:15px}
+
+/* contact */
+#contact{padding-bottom:40px}
+.contact-mail{
+  font-family:'Anton',sans-serif;text-transform:lowercase;
+  font-size:clamp(28px,6vw,72px);color:var(--ink);text-decoration:none;
+  display:inline-block;line-height:1.05;word-break:break-all;
+}
+.contact-links{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
+.contact-links a{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink);text-decoration:none;
+  border:2px solid var(--ink);padding:10px 18px;background:var(--paper);transition:all .12s;
+}
+.contact-links a:hover{background:var(--ink);color:var(--paper)}
+
+footer{
+  border-top:2.5px solid var(--ink);padding:20px 24px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;
+}
+
+@media(max-width:820px){
+  nav .burger{display:block}
+  nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--paper);border-bottom:2.5px solid var(--ink)}
+  nav.open ul{display:flex}
+  nav ul li{border-top:2px solid var(--ink)}
+  nav ul a{display:block;padding:16px 24px;font-size:16px}
+  .over-grid{grid-template-columns:1fr}
+  .werk-grid{grid-template-columns:1fr}
+  .werk-grid .kaart{border-right:none}
+  .werk-grid .kaart:nth-last-child(-n+2){border-bottom:2.5px solid var(--ink)}
+  .werk-grid .kaart:last-child{border-bottom:none}
+  .diensten{grid-template-columns:1fr}
+  .since{
+    display:none;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .marquee .track{animation:none}
+  *{transition:none!important}
+}
+a:focus-visible,button:focus-visible{outline:3px solid var(--riso-pink-deep);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#top">vandoeselaar.com</a>
+  <button class="burger" aria-expanded="false" aria-controls="hoofdmenu">menu</button>
+  <ul id="hoofdmenu">
+    <li><a href="#over">over</a></li>
+    <li><a href="#werk">werk</a></li>
+    <li><a href="#kunst">kunst</a></li>
+    <li><a href="#diensten">diensten</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<div class="scroll">
+
+<header class="hero" id="top">
+  <div class="hero-shapes" aria-hidden="true">
+    <div class="blob pink"></div>
+    <div class="blob blue"></div>
+    <div class="blob yellow"></div>
+  </div>
+  <div class="hero-eyebrow mono">
+    <span>developer</span><span>maker</span><span>autonoom kunstenaar (BFA)</span>
+  </div>
+  <h1>
+    <span class="line misreg on" data-text="JOB VAN">JOB VAN</span>
+    <span class="line misreg on" data-text="DOESELAAR">DOESELAAR</span>
+  </h1>
+  <div class="hero-sub">
+    <p>Opgeleid als autonoom kunstenaar. Werkend als developer. Ik sloop dingen open om te zien hoe ze werken en bouw ze daarna beter terug.</p>
+    <div class="since mono">online sinds<a href="https://vandoeselaar.com/index-1994.html"><b>1994</b></a></div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>xbox homebrew</span><i>●</i><span>arduino</span><i>●</i><span>reverse engineering</span><i>●</i><span>wordpress</span><i>●</i><span>buizenversterkers</span><i>●</i><span>midi</span><i>●</i><span>ESP</span><i>●</i><span>game console mods</span><i>●</i><span>retro gaming</span><i>●</i><span>raspberry pi</span><i>●</i><span>cloudflare</span><i>●</i><span>C</span><i>●</i><span>python</span><i>●</i><span>solderen</span><i>●</i><span>dj doozle</span><i>●</i>
+    <span>xbox homebrew</span><i>●</i><span>arduino</span><i>●</i><span>reverse engineering</span><i>●</i><span>wordpress</span><i>●</i><span>buizenversterkers</span><i>●</i><span>midi</span><i>●</i><span>ESP</span><i>●</i><span>game console mods</span><i>●</i><span>retro gaming</span><i>●</i><span>raspberry pi</span><i>●</i><span>cloudflare</span><i>●</i><span>C</span><i>●</i><span>python</span><i>●</i><span>solderen</span><i>●</i><span>dj doozle</span><i>●</i>
+  </div>
+</div>
+
+<main>
+<section id="over">
+  <div class="sec-label">over / no. 01</div>
+  <h2><span class="misreg" data-text="Kunstacademie">Kunstacademie</span> met een soldeerbout</h2>
+  <div class="over-grid">
+    <div>
+      <p>Ik studeerde <b>autonome kunst</b> een opleiding waar je leert kijken, twijfelen en dingen maken die er nog niet zijn. Dat bleek de beste voorbereiding op wat ik nu doe: software en hardware die tegen de draad in gebouwd worden.</p>
+      <p>Overdag werk ik als developer bij het <b>Instituut voor de Nederlandse Taal</b>: webapplicaties, performance, infrastructuur en AI-experimenten voor de digitale infrastructuur van het Nederlands. Buiten kantooruren schrijf ik hombrew voor spelcomputers, bouw ik buizenversterkers en documenteer ik op mijn tinkering-blog.</p>
+      <p>De rode draad: geen zwarte dozen accepteren. Alles gaat open.</p>
+    </div>
+    <div class="feiten mono">
+      <div><span>opleiding</span><b>autonome kunst</b></div>
+      <div><span>huidig</span><b>developer @ IVDNT</b></div>
+      <div><span>freelance</span><b>web / embedded / RE</b></div>
+      <div><span>talen</span><b>C · PHP · JS · Python</b></div>
+      <div><span>achter de decks</span><b>als Dj Doozle</b></div>
+      <div><span>blog sinds</span><b>2009</b></div>
+      <div><span>online sinds</span><b>1994</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="werk">
+  <div class="sec-label">werk / no. 02</div>
+  <h2>Geselecteerd <span class="misreg" data-text="werk">werk</span></h2>
+  <div class="werk-grid">
+    <article class="kaart">
+      <div class="stempel">open source</div>
+      <div class="tags"><span>C</span><span>nxdk</span><span>TLS</span></div>
+      <h3>SaveSyncX</h3>
+      <p>Homebrew voor de originele Xbox die gamesaves synchroniseert via WebDAV en GitHub. Eigen TLS 1.2-stack (BearSSL), ZIP-inflate from scratch en het her-signeren van saves via de HMAC-keychain van de console.</p>
+      <a href="https://github.com/vandoeselaar/SaveSyncX">github → SaveSyncX</a>
+    </article>
+    <article class="kaart">
+      <div class="stempel">IVDNT × Taalunie</div>
+      <div class="tags"><span>web</span><span>AI</span><span>crowdsourcing</span></div>
+      <h3>Duidelijke Taal</h3>
+      <p>Spelplatform waarin deelnemers door AI vereenvoudigde zinnen beoordeelden voor onderzoek naar automatische tekstvereenvoudiging. 385 spelers, bijna 25.000 beoordeelde zinnen.</p>
+      <a href="https://ivdnt.org/onderzoek-projecten/afgeronde-projecten/duidelijke-taal/">ivdnt.org → project</a>
+    </article>
+    <article class="kaart">
+      <div class="stempel">hardware hack</div>
+      <div class="tags"><span>C</span><span>MIDI</span><span>reverse engineering</span></div>
+      <h3>CDJ-1000 → Rekordbox</h3>
+      <p>Een Pioneer CDJ-1000MK3 uit 2006 omgebouwd tot volwaardige MIDI-controller. Protocol gereverse-engineered, eigen firmware geschreven het meest gesterde project op mijn GitHub.</p>
+      <a href="https://github.com/vandoeselaar/CDJ-1000-mk3-for-Rekordbox">github → CDJ-1000</a>
+    </article>
+    <article class="kaart">
+      <div class="stempel">NWO · Radboud × ITTA</div>
+      <div class="tags"><span>web</span><span>audio</span><span>citizen science</span></div>
+      <h3>Wat je zegt ben je zelf</h3>
+      <p>Ontwerp en bouw van het citizen-scienceplatform waarop mbo-studenten zelf sociolinguïstische experimenten opzetten: spraakfragmenten opnemen en uploaden, laten beoordelen door luisteraars, en samen de data analyseren. NWO-gefinancierd project met de Radboud Universiteit en ITTA (2022–2023); het INT bouwde en hostte het platform en dat was ik.</p>
+      <a href="https://www.ru.nl/onderzoek/onderzoeksprojecten/wat-je-zegt-ben-je-zelf-1">ru.nl → over het project</a>
+    </article>
+    <article class="kaart">
+      <div class="stempel">retro</div>
+      <div class="tags"><span>elektronica</span><span>RGB</span><span>mods</span></div>
+      <h3>Console mods</h3>
+      <p>Nintendo 64 RGB-mod, switchless Mega Drive-modchip met eigen firmware, GameCube-reparaties en Xbox HDMI-mods. Gedocumenteerd zodat anderen het ook durven.</p>
+      <a href="https://tinkering.vandoeselaar.com">blog → tinkering</a>
+    </article>
+    <article class="kaart">
+      <div class="stempel">Onze Taal × IVDNT</div>
+      <div class="tags"><span>RAG</span><span>solr</span><span>LLM</span></div>
+      <h3>De Taalassistent</h3>
+      <p>Prototype van een betrouwbare AI-taalassistent voor Onze Taal, gebouwd op hun kennisbank van 60.000 taalvragen. RAG-architectuur die generieke modellen versloeg in de pilot gesteund door SIDN fonds en de Taalunie.</p>
+      <a href="https://www.sidn.nl/nieuws-en-blogs/een-taalassistent-die-je-kunt-vertrouwen">sidn.nl → over het project</a>
+    </article>
+  </div>
+</section>
+
+<section id="kunst">
+  <div class="sec-label">kunst / no. 03</div>
+  <h2>De machine eet zijn <span class="misreg" data-text="boodschap">boodschap</span></h2>
+
+  <div class="kunst-paneel">
+    <div class="kunst-werk-titel">For The Birds (2020)</div>
+    <figure class="kunst-beeld">
+      <a href="images/4thebirds-hitteplan-full.jpg" target="_blank" rel="noopener">
+        <picture><source srcset="images/4thebirds-hitteplan-1600.webp" type="image/webp"><img src="images/4thebirds-hitteplan-1600.jpg" width="1600" height="1190" loading="lazy" decoding="async" alt="Mozaïekfoto van een dode vogel, opgebouwd uit honderden kleine Twitter-profielfoto's, gegenereerd op 6 augustus 2020 rond de hashtag #hitteplan met 262 deelnemers"></picture>
+      </a>
+      <figcaption>06-08-2020 10:50 #hitteplan 262 contributors · klik voor groot</figcaption>
+    </figure>
+    <div>
+      <p>Elk uur genereerde <em>For The Birds</em> een mozaïekfoto van een dode vogel, opgebouwd uit Twitter-profielfoto's van accounts die op dat moment meeliftten op een trending woord of hashtag in Nederland willekeurig gekozen uit de top&nbsp;10. Per mozaïek werden tot 3000 profielfoto's binnengehaald en alleen gebruikt waar ze pasten; wie zwermgedrag vertoonde, werd ongevraagd deelnemer.</p>
+      <p>De foto's van de dode vogels zijn als found footage behandeld (CC0). Onwillige deelnemers konden zichzelf via de site uit het werk laten verwijderen de opt-out als onderdeel van het kunstwerk.</p>
+    </div>
+    <div class="kunst-credits">
+      <div><span>expositie</span><b>EN NU</b></div>
+      <div><span>galerie</span><b>Pictura, Dordrecht</b></div>
+      <div><span>wanneer</span><b>8–9 &amp; 15–16 aug 2020</b></div>
+      <div><span>medium</span><b>generatief Twitter-mozaïek</b></div>
+      <div><span>dit exemplaar</span><b>#hitteplan, 262 deelnemers</b></div>
+    </div>
+  </div>
+
+  <div class="kunst-paneel">
+    <div class="kunst-werk-titel">VCR-installatie Platform 2</div>
+    <div class="kunst-fotos kunst-fotos--3">
+      <a href="images/p2-installatie-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/p2-installatie-thumb.webp" type="image/webp"><img src="images/p2-installatie-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="De installatie in de verduisterde zaal: videotape loopt vanuit de VCR in zigzag door katrollen over de muur, met een kleine monitor op een plank"></picture></a>
+      <a href="images/p2-projectie-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/p2-projectie-thumb.webp" type="image/webp"><img src="images/p2-projectie-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="Projectie van agent Smith met zonnebril op de galeriemuur, de projector op een sokkel op de vloer"></picture></a>
+      <a href="images/platform2-vcr.jpg" target="_blank" rel="noopener"><picture><source srcset="images/p2-tape-thumb.webp" type="image/webp"><img src="images/p2-tape-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="Close-up in zwart-wit: de tape strak gespannen tussen katrollen op de muur"></picture></a>
+    </div>
+    <div>
+      <p>Op <em>Platform 2</em> de autonome expositieruimte van het Nederlands Instituut voor Mediakunst in Amsterdam toonde ik een VCR-installatie: een videoloop met een bewerkte monoloog van agent Smith uit <em>The Matrix</em>. Terwijl de machine de film afspeelt, verteert hij langzaam zijn eigen tape, tot Smiths wijsheid volledig is verdwenen.</p>
+      <p>Door oude en nieuwe technieken te recyclen en te her-toe-eigenen ondermijnt het werk onze communicatiecultuur een thema dat, achteraf gezien, nooit is weggegaan: ik sloop nog steeds machines open om te zien wat ze eigenlijk zeggen.</p>
+    </div>
+    <div class="kunst-credits">
+      <div><span>expositie</span><b>Platform 2</b></div>
+      <div><span>instituut</span><b>NIMk, Amsterdam</b></div>
+      <div><span>medium</span><b>VCR-installatie, videoloop</b></div>
+      <div><span>naast werk van</span><b>Robert Overweg &amp; André Avelãs</b></div>
+      <div><span>archief</span><b><a href="https://nimk.nl/nl/platform-2">nimk.nl → platform-2</a></b></div>
+    </div>
+  </div>
+
+  <div class="kunst-paneel">
+    <div class="kunst-werk-titel">MovieMoment (2010)</div>
+    <div class="kunst-fotos">
+      <a href="images/mm-CIMG0947-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/mm-CIMG0947-thumb.webp" type="image/webp"><img src="images/mm-CIMG0947-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="De omgebouwde munttelefoon aan een reling in de Rotterdamse haven, onder het steigerbordje 1318"></picture></a>
+      <a href="images/mm-CIMG0893-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/mm-CIMG0893-thumb.webp" type="image/webp"><img src="images/mm-CIMG0893-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="Opengewerkt binnenwerk van de PTT/Sodeco-munttelefoon op de werkbank, met draaischijf en muntbak"></picture></a>
+      <a href="images/mm-CIMG0850-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/mm-CIMG0850-thumb.webp" type="image/webp"><img src="images/mm-CIMG0850-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="Prototype op gaatjesbord: gesloopte telefoonprintplaat aangestuurd door een Sanguino-microcontroller"></picture></a>
+      <a href="images/mm-CIMG0950-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/mm-CIMG0950-thumb.webp" type="image/webp"><img src="images/mm-CIMG0950-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="Ingebouwde Samsung-telefoon tussen de bedrading toont 50 gemiste oproepen: teruggebelde voorbijgangers"></picture></a>
+      <a href="images/mm-CIMG0982-1600.jpg" target="_blank" rel="noopener"><picture><source srcset="images/mm-CIMG0982-thumb.webp" type="image/webp"><img src="images/mm-CIMG0982-thumb.jpg" width="640" height="480" loading="lazy" decoding="async" alt="De steiger aan het water in Rotterdam waar de telefooncel van MovieMoment hing"></picture></a>
+    </div>
+    <div>
+      <p>Een openbare telefooncel belt zelf willekeurige telefoonnummers en hangt direct weer op. Wie zo'n gemiste oproep terugbelt, laat nietsvermoedend een telefooncel ergens op straat rinkelen en schenkt een toevallige voorbijganger dat filmische moment: een rinkelende publieke telefoon, voor jou bestemd. Vandaar: <em>MovieMoment</em>.</p>
+      <p>Dit is slopen en maken in één gebaar een publieke machine opengeschroefd, een Arduino erin, en de infrastructuur van de stad omgebouwd tot regisseur van kleine cinema. De vroegste voorloper van alles wat hierboven staat.</p>
+    </div>
+    <div class="kunst-credits">
+      <div><span>jaar</span><b>mei 2010</b></div>
+      <div><span>medium</span><b>gehackte telefooncel, Arduino</b></div>
+      <div><span>podium</span><b>de openbare ruimte</b></div>
+      <div><span>documentatie</span><b><a href="https://tinkering.vandoeselaar.com/moviemoment/">tinkering → moviemoment</a></b></div>
+    </div>
+  </div>
+</section>
+
+<section id="diensten">
+  <div class="sec-label">diensten / no. 04</div>
+  <h2>Wat ik voor je <span class="misreg" data-text="maak">maak</span></h2>
+  <div class="diensten">
+    <div class="dienst">
+      <h3>Webapplicaties</h3>
+      <p>Van WordPress-maatwerk tot API's en performance-optimalisatie. Snel, toegankelijk en zonder onnodige franje.</p>
+    </div>
+    <div class="dienst">
+      <h3>Reverse engineering</h3>
+      <p>Protocollen, firmware en bestandsformaten uitpluizen. Als de documentatie ontbreekt, schrijf ik hem zelf.</p>
+    </div>
+    <div class="dienst">
+      <h3>Embedded systems</h3>
+      <p>C op kale hardware: microcontrollers, retro-platforms en alles met een soldeerpunt. Van prototype tot werkend product.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-label">contact / no. 05</div>
+  <h2>Zullen we iets <span class="misreg" data-text="slopen">slopen</span>?</h2>
+  <a class="contact-mail misreg" id="mail" href="#contact" data-user="ofni" data-dom="raaleseodnav" data-tld="moc">info [at] vandoeselaar [punt] com</a>
+  <br><br><h3>Wil je <span class="misreg" data-text="meer">meer</span> zien?</h3>
+  <div class="contact-links">
+    <a href="https://github.com/vandoeselaar">github.com/vandoeselaar</a>
+    <a href="https://tinkering.vandoeselaar.com">tinkering.vandoeselaar.com</a>
+    <a href="https://www.instagram.com/hausvader/">instagram → hausvader</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>© vandoeselaar.com gedrukt in 3 kleuren, geregistreerd in geen enkele</span>
+  <span>online sinds 1994</span>
+</footer>
+</div><!-- /.scroll -->
+
+<script>
+// misregistratie in de hero dooft na de intro en reageert daarna op hover
+window.addEventListener('load',()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setTimeout(()=>{document.querySelectorAll('.hero .misreg.on').forEach(el=>el.classList.remove('on'));},1400);
+});
+// subtiele registratieverschuiving op scroll in de hero-titel
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  let ticking=false;
+  const scroller=document.querySelector('.scroll');
+  const pink=document.querySelector('.blob.pink');
+  const blue=document.querySelector('.blob.blue');
+  const geel=document.querySelector('.blob.yellow');
+  scroller.addEventListener('scroll',()=>{
+    if(ticking)return;ticking=true;
+    requestAnimationFrame(()=>{
+      const t=scroller.scrollTop;
+      const y=Math.min(t/60,8);
+      document.documentElement.style.setProperty('--shift',(3+y*0.4)+'px');
+      // parallax: drukgangen schuiven elk met eigen snelheid, alleen zolang de hero in beeld is
+      if(t<window.innerHeight*1.3){
+        pink.style.transform='translate3d(0,'+(t*0.18)+'px,0)';
+        blue.style.transform='translate3d(0,'+(t*0.32)+'px,0) rotate(12deg)';
+        geel.style.transform='translate3d(0,'+(t*0.5)+'px,0)';
+      }
+      ticking=false;
+    });
+  },{passive:true});
+}
+// hamburgermenu
+(function(){
+  var nav = document.querySelector('nav');
+  var burger = nav.querySelector('.burger');
+  function sluit(){ nav.classList.remove('open'); burger.setAttribute('aria-expanded','false'); burger.textContent = 'menu'; }
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.textContent = open ? 'sluit \u00d7' : 'menu';
+  });
+  nav.querySelectorAll('ul a').forEach(function(a){ a.addEventListener('click', sluit); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && nav.classList.contains('open')){ sluit(); burger.focus(); } });
+})();
+
+// e-mailadres client-side samenstellen (broncode bevat het adres nergens)
+(function(){
+  var m = document.getElementById('mail');
+  if(!m) return;
+  var r = function(s){ return s.split('').reverse().join(''); };
+  var adres = r(m.dataset.user) + '\u0040' + r(m.dataset.dom) + '.' + r(m.dataset.tld);
+  m.href = 'mailto:' + adres;
+  m.textContent = adres;
+  m.setAttribute('data-text', adres);
+})();
+
+// lightbox voor kunstfoto's zonder JS openen links gewoon in een nieuw tabblad
+(function(){
+  var links = document.querySelectorAll('.kunst-fotos a, .kunst-beeld a');
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var img = a.querySelector('img');
+      var box = document.createElement('div');
+      box.className = 'lightbox';
+      box.setAttribute('role','dialog');
+      box.setAttribute('aria-modal','true');
+      box.setAttribute('aria-label', img ? img.alt : 'foto');
+      box.innerHTML = '<img src="' + a.href + '" alt="' + (img ? img.alt.replace(/"/g,'&quot;') : '') + '">' +
+        (img && img.alt ? '<figcaption>' + img.alt + '</figcaption>' : '') +
+        '<button type="button">sluiten [esc]</button>';
+      function close(){ box.remove(); document.removeEventListener('keydown', onKey); a.focus(); }
+      function onKey(ev){ if(ev.key === 'Escape') close(); }
+      box.addEventListener('click', function(ev){ if(ev.target === box || ev.target.tagName === 'BUTTON') close(); });
+      document.addEventListener('keydown', onKey);
+      document.body.appendChild(box);
+      box.querySelector('button').focus();
+    });
+  });
+})();
+</script>
+</body>
 </html>
